@@ -6,22 +6,25 @@ This project implements a multi-agent system using **CrewAI** to automate the 4 
 
 ```text
 Hospital/
-├── pyproject.toml                # Poetry configuration & project dependency definitions
-├── README.md                     # Documentation with detailed commands
-├── .env                          # Configuration file for API keys (e.g., Gemini, OpenAI)
-├── .env.example                  # Template configuration file for environment variables
+├── pyproject.toml                    # Poetry configuration & project dependency definitions
+├── README.md                         # Documentation with detailed commands
+├── .env                              # Configuration file for API keys (e.g., Gemini, OpenAI)
+├── .env.example                      # Template configuration file for environment variables
 └── src/
     └── hospital/
-        ├── __init__.py           # Hospital package initializer
-        ├── main.py               # Main CLI entry point (interactive runner)
-        ├── crew.py               # Wires agents and tasks using @CrewBase & decorators
-        ├── tools/                # Folder for custom tools & mock database definitions
-        │   └── __init__.py
-        ├── schemas/              # Folder for Pydantic schemas for output structures
-        │   └── __init__.py
-        └── config/               # Folder for YAML agent and task configurations
-            ├── agents.yaml
-            └── tasks.yaml
+        ├── __init__.py               # Hospital package initializer (clean)
+        ├── main.py                   # Main CLI entry point (interactive runner)
+        ├── crew.py                   # Wires agents & tasks via @CrewBase decorators
+        ├── config/                   # YAML configuration folder
+        │   ├── agents.yaml           # Agent roles, goals & backstories
+        │   └── tasks.yaml            # Task descriptions & expected outputs
+        ├── tools/                    # Each tool has its own dedicated file
+        │   ├── __init__.py           # Clean re-export of all tools
+        │   ├── patient_history_tool.py   # Search Patient Medical History tool + mock DB
+        │   └── opd_fee_tool.py       # Calculate OPD Consultation Fee tool
+        └── schemas/                  # Pydantic output schemas
+            ├── __init__.py           # Clean re-export of all schemas
+            └── opd_schemas.py        # All OPD counter output model definitions
 ```
 
 ## System Workflow & Counter Agents

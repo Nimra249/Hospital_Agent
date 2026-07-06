@@ -1,8 +1,13 @@
 import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from hospital.tools import search_patient_history, calculate_opd_fee
-from hospital.schemas import (
+
+# Tool imports — each tool lives in its own dedicated file
+from hospital.tools.patient_history_tool import search_patient_history
+from hospital.tools.opd_fee_tool import calculate_opd_fee
+
+# Schema imports — all Pydantic output models live in opd_schemas.py
+from hospital.schemas.opd_schemas import (
     TokenCounterOutput,
     VerificationCounterOutput,
     SlipCounterOutput,
