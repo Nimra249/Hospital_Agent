@@ -15,11 +15,13 @@ Hospital/
         ├── __init__.py           # Hospital package initializer
         ├── main.py               # Main CLI entry point (interactive runner)
         ├── crew.py               # Wires agents and tasks using @CrewBase & decorators
-        ├── tools.py              # Custom tools & mock database definitions
-        ├── schemas.py            # Pydantic schemas for counter output structures
-        └── config/
-            ├── agents.yaml       # YAML configuration defining agent roles, goals, and backstories
-            └── tasks.yaml        # YAML configuration defining task descriptions and expected outputs
+        ├── tools/                # Folder for custom tools & mock database definitions
+        │   └── __init__.py
+        ├── schemas/              # Folder for Pydantic schemas for output structures
+        │   └── __init__.py
+        └── config/               # Folder for YAML agent and task configurations
+            ├── agents.yaml
+            └── tasks.yaml
 ```
 
 ## System Workflow & Counter Agents
