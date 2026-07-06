@@ -8,13 +8,15 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8')
 
-# Add the workspace root to python path to prevent import issues
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add src directory to python path to prevent import issues
+src_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
 # Load env variables before other imports
 load_dotenv()
 
-from src.crew import HospitalOPDWorkflowCrew
+from hospital.crew import HospitalOPDWorkflowCrew
 
 def print_receipt(result):
     """Prints the final OPD receipt/ticket in a visually appealing format."""
@@ -74,7 +76,8 @@ def run_workflow(inputs):
     
     print_receipt(result)
 
-def main():
+def run():
+    """Main execution function for CrewAI runner scripts."""
     print("="*60)
     print("         Hospital OPD Automated Token System (CrewAI)       ")
     print("="*60)
@@ -84,7 +87,11 @@ def main():
     print("3. John Doe (New patient, no history, complaining of chest pain)")
     print("4. Input custom patient details interactively")
     
-    choice = input("\nEnter choice (1-4): ").strip()
+    try:
+        choice = input("\nEnter choice (1-4): ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print("\nExiting.")
+        return
     
     if choice == "1":
         inputs = {
@@ -112,11 +119,16 @@ def main():
         }
     elif choice == "4":
         print("\nEnter Patient Details:")
-        name = input("Patient Name: ").strip()
-        age = int(input("Patient Age: ").strip() or "30")
-        gender = input("Patient Gender (Male/Female/Other): ").strip()
-        complaint = input("Symptoms / Health Complaint: ").strip()
-        cnic = input("CNIC/ID (format XXXXX-XXXXXXX-X or dummy): ").strip()
+        try:
+            name = input("Patient Name: ").strip()
+            age_str = input("Patient Age: ").strip()
+            age = int(age_str) if age_str else 30
+            gender = input("Patient Gender (Male/Female/Other): ").strip()
+            complaint = input("Symptoms / Health Complaint: ").strip()
+            cnic = input("CNIC/ID (format XXXXX-XXXXXXX-X or dummy): ").strip()
+        except (KeyboardInterrupt, EOFError, ValueError) as e:
+            print(f"\nInvalid details or execution interrupted: {e}")
+            return
         
         inputs = {
             "patient_name": name,
@@ -132,4 +144,4 @@ def main():
     run_workflow(inputs)
 
 if __name__ == "__main__":
-    main()
+    run()
